@@ -1,28 +1,27 @@
 //your JS code here. If required.
-function moveFocus(current, event) {
-            if (current.value.length >= 1) {
-                // Move focus to the next input
-                const inputs = Array.from(document.querySelectorAll('.code'));
-                const currentIndex = inputs.indexOf(current);
-                if (currentIndex < inputs.length - 1) {
-                    inputs[currentIndex + 1].focus();
-                }
-            }
-        }
 
-function handleBackspace(current, event) {
-            if (event.key === 'Backspace') {
-                event.preventDefault();
-                if (current.value.length === 0) {
-                    const inputs = Array.from(document.querySelectorAll('.code'));
-                    const currentIndex = inputs.indexOf(current);
-                    if (currentIndex > 0) {
-                        const previousInput = inputs[currentIndex - 1];
-                        previousInput.focus();
-                        previousInput.value = '';
-                    }
-                } else {
-                    current.value = '';
-                }
-            }
+const inputs = document.getElementsByClassName('code');
+
+let currentActive = 0;
+for(let i=0;i<inputs.length;i++)
+	{
+		inputs[i].addEventListener('input',()=>{
+			if(i+1<inputs.length)
+			{
+				currentActive = i + 1;
+				inputs[i+1].focus();
+			}
+		});
+  inputs[i].addEventListener('keydown', (event) => {
+    if (event.key === 'Backspace') {
+      if (inputs[i].value === '') {
+        if (i > 0) {
+          currentActive = i - 1;
+          inputs[currentActive].focus();
         }
+      } else {
+        inputs[i].value = '';
+      }
+    }
+  });
+	}
